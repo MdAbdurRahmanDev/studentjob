@@ -47,20 +47,68 @@
                 </div>
                 
                 <div class="mt-8 md:mt-0">
-                    <button class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-10 py-4 rounded-xl shadow-lg shadow-yellow-500/20 transition-all hover:-translate-y-1 w-full md:w-auto">
-                        এপ্লাই করুন
-                    </button>
+                    @if ($applied)
+                        <button disabled class="bg-gray-700 text-gray-300 font-bold px-10 py-4 rounded-xl shadow-lg cursor-not-allowed w-full md:w-auto flex items-center justify-center border border-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            এপ্লাই করেছেন
+                        </button>
+                    @elseif (!$showApplyForm)
+                        <button wire:click="openApplyForm" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-10 py-4 rounded-xl shadow-lg shadow-yellow-500/20 transition-all hover:-translate-y-1 w-full md:w-auto">
+                            এপ্লাই করুন
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Details Section -->
-    <div class="bg-[#faf9f6] py-16">
+    <div class="bg-[#faf9f6] py-16 relative">
         <div class="container mx-auto px-6 lg:px-12 flex flex-col lg:flex-row gap-12">
             
             <!-- Main Content -->
             <div class="w-full lg:w-2/3">
+
+                @if (session()->has('success'))
+                    <div class="mb-8 p-6 bg-green-50 border border-green-200 rounded-2xl flex items-start shadow-sm">
+                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center shrink-0 mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-green-800">অভিনন্দন!</h3>
+                            <p class="text-green-700 mt-1">{{ session('success') }}</p>
+                        </div>
+                    </div>
+                @endif
+
+                @if ($showApplyForm)
+                    <!-- Application Form -->
+                    <div class="bg-white rounded-3xl p-8 md:p-10 shadow-lg border border-yellow-200 mb-8 border-l-4 border-l-yellow-500">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-2">আবেদন পত্র</h2>
+                        <p class="text-gray-500 mb-6">নিয়োগকারীকে বোঝান কেন আপনি এই শিফটের জন্য উপযুক্ত।</p>
+                        
+                        <form wire:submit="submitApplication">
+                            <div class="mb-6">
+                                <label for="message" class="block text-sm font-medium text-gray-700 mb-2">আপনার বার্তা (ঐচ্ছিক)</label>
+                                <textarea wire:model="applicationMessage" id="message" rows="4" placeholder="আমি এই শিফটের জন্য উপযুক্ত কারণ..." class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-yellow-500 focus:border-yellow-500 block p-4 transition-colors resize-none"></textarea>
+                                @error('applicationMessage') <span class="text-sm text-red-500 mt-2 block">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="flex justify-end space-x-4">
+                                <button type="button" wire:click="$set('showApplyForm', false)" class="px-6 py-3 text-gray-600 font-semibold hover:bg-gray-100 rounded-xl transition-colors">বাতিল</button>
+                                <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-xl shadow-md transition-colors" wire:loading.attr="disabled">
+                                    <span wire:loading.remove>জমা দিন</span>
+                                    <span wire:loading>জমা হচ্ছে...</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                @endif
+
                 <div class="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-gray-100">
                     <h2 class="text-2xl font-bold text-gray-900 mb-6">কাজের বিবরণ</h2>
                     <div class="prose prose-gray max-w-none mb-10">
