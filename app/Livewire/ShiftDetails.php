@@ -30,6 +30,11 @@ class ShiftDetails extends Component
             return redirect()->route('login');
         }
 
+        if (auth()->user()->role === 'user' && !auth()->user()->hasActiveSubscription()) {
+            session()->flash('error', 'শিফটে এপ্লাই করার জন্য আপনার একটি একটিভ সাবস্ক্রিপশন প্রয়োজন।');
+            return redirect()->route('subscribe');
+        }
+
         $this->showApplyForm = true;
     }
 

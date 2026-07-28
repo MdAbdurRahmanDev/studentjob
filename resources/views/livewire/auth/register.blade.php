@@ -54,6 +54,14 @@
                 <!-- Abstract glowing orb -->
                 <div class="absolute -bottom-12 -right-12 w-64 h-64 bg-yellow-500 rounded-full mix-blend-screen filter blur-3xl opacity-30"></div>
                 
+                <!-- Employer Switch Button -->
+                <div class="relative z-10 flex justify-end">
+                    <a href="{{ route('employer.register') }}" wire:navigate class="inline-flex items-center px-4 py-2 border border-yellow-500/50 rounded-full text-sm font-medium text-yellow-500 hover:bg-yellow-500 hover:text-black transition-all duration-300">
+                        কোম্পানি হিসেবে যুক্ত হোন
+                        <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+
                 <div class="relative z-10 mt-auto">
                     <h2 class="text-3xl font-bold mb-4">আপনার ক্যারিয়ার শুরু হোক এখান থেকে</h2>
                     <p class="text-gray-300 text-sm leading-relaxed">

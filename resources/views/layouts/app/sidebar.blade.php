@@ -12,20 +12,57 @@
 
             <flux:sidebar.nav>
                 <flux:sidebar.group :heading="__('Platform')" class="grid">
+                    @if(!auth()->check() || auth()->user()->role !== 'admin')
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
+                    @endif
+
+                    @if(auth()->check() && auth()->user()->role === 'admin')
+                    <flux:sidebar.item icon="shield-check" :href="route('admin.dashboard')" :current="request()->routeIs('admin.dashboard')" wire:navigate>
+                        {{ __('Admin Dashboard') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="users" :href="route('admin.users')" :current="request()->routeIs('admin.users')" wire:navigate>
+                        {{ __('All Users') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="check-badge" :href="route('admin.verifications')" :current="request()->routeIs('admin.verifications')" wire:navigate>
+                        {{ __('User Verifications') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="briefcase" :href="route('admin.jobs')" :current="request()->routeIs('admin.jobs')" wire:navigate>
+                        {{ __('Total Jobs') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="clipboard-document-check" :href="route('admin.applications')" :current="request()->routeIs('admin.applications')" wire:navigate>
+                        {{ __('Job Applications') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="folder" :href="route('admin.categories')" :current="request()->routeIs('admin.categories')" wire:navigate>
+                        {{ __('Categories') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="megaphone" :href="route('admin.ads')" :current="request()->routeIs('admin.ads')" wire:navigate>
+                        {{ __('Ads Management') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="credit-card" :href="route('admin.payment-methods')" :current="request()->routeIs('admin.payment-methods')" wire:navigate>
+                        {{ __('Payment Methods') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="banknotes" :href="route('admin.transactions')" :current="request()->routeIs('admin.transactions')" wire:navigate>
+                        {{ __('Transactions') }}
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
+
+                <flux:sidebar.group :heading="__('Settings')" class="grid">
+                    <flux:sidebar.item icon="cog-6-tooth" :href="route('admin.settings.general')" :current="request()->routeIs('admin.settings.general')" wire:navigate>
+                        {{ __('General Settings') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="window" :href="route('admin.settings.home-page')" :current="request()->routeIs('admin.settings.home-page')" wire:navigate>
+                        {{ __('Home Page Settings') }}
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
+                @endif
             </flux:sidebar.nav>
 
             <flux:spacer />
 
             <flux:sidebar.nav>
-                <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                    {{ __('Repository') }}
-                </flux:sidebar.item>
-
-                <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
+                <flux:sidebar.item icon="book-open-text" href="{{ route('admin.documentation') }}" wire:navigate>
                     {{ __('Documentation') }}
                 </flux:sidebar.item>
             </flux:sidebar.nav>

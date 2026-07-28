@@ -23,7 +23,11 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            {{ $shift->time }}
+                            @if($shift->start_datetime && $shift->end_datetime)
+                                {{ \Carbon\Carbon::parse($shift->start_datetime)->format('M d, g:i A') }} - {{ \Carbon\Carbon::parse($shift->end_datetime)->format('M d, g:i A') }}
+                            @else
+                                {{ $shift->time }}
+                            @endif
                         </span>
                     </div>
                     
@@ -160,7 +164,11 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-500 font-medium">সময়</p>
-                                <p class="text-lg font-bold text-gray-900">{{ $shift->time }}</p>
+                                @if($shift->start_datetime && $shift->end_datetime)
+                                    <p class="text-lg font-bold text-gray-900">{{ \Carbon\Carbon::parse($shift->start_datetime)->format('M d, g:i A') }} - {{ \Carbon\Carbon::parse($shift->end_datetime)->format('M d, g:i A') }}</p>
+                                @else
+                                    <p class="text-lg font-bold text-gray-900">{{ $shift->time }}</p>
+                                @endif
                             </div>
                         </div>
                     </div>

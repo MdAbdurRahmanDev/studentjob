@@ -66,4 +66,37 @@ class User extends Authenticatable implements PasskeyUser
             ? Str::substr($initials, 0, 1).Str::substr($initials, -1)
             : $initials;
     }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function latestSubscription()
+    {
+        return $this->hasOne(Subscription::class)->latestOfMany();
+    }
+
+    public function hasActiveSubscription(): bool
+    {
+        $sub = $this->latestSubscription;
+        return $sub && $sub->status === 'approved' && ($sub->expires_at === null || $sub->expires_at->isFuture());
+    }
+
+    public function hasPendingSubscription(): bool
+    {
+        $sub = $this->latestSubscription;
+        return $sub && $sub->status === 'pending';
+    }
+
+    public function verification()
+    {
+        return $this->hasOne(UserVerification::class)->latestOfMany();
+    }
+
+    public function isVerified(): bool
+    {
+        $verification = $this->verification;
+        return $verification && $verification->status === 'approved';
+    }
 }
