@@ -39,7 +39,7 @@
             <div class="w-full md:w-1/2 p-10 md:p-14">
                 <div class="mb-10 text-center md:text-left">
                     <h3 class="text-2xl font-bold text-gray-900 mb-2">লগ ইন করুন</h3>
-                    <p class="text-gray-500 text-sm">আপনার ইমেইল এবং পাসওয়ার্ড দিন</p>
+                    <p class="text-gray-500 text-sm">আপনার ইমেইল বা ফোন নম্বর এবং পাসওয়ার্ড দিন</p>
                 </div>
                 
                 @if(session('status'))
@@ -52,9 +52,9 @@
                     @csrf
 
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">ইমেইল অ্যাড্রেস</label>
-                        <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus placeholder="email@example.com" class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-yellow-500 focus:border-yellow-500 block p-3.5 transition-colors">
-                        @error('email') <span class="mt-2 text-sm text-red-600">{{ $message }}</span> @enderror
+                        <label for="login" class="block text-sm font-medium text-gray-700 mb-2">ইমেইল বা ফোন নম্বর</label>
+                        <input id="login" type="text" name="login" value="{{ old('login') }}" required autofocus placeholder="email@example.com অথবা 01XXXXXXXXX" class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-yellow-500 focus:border-yellow-500 block p-3.5 transition-colors">
+                        @error('login') <span class="mt-2 text-sm text-red-600">{{ $message }}</span> @enderror
                     </div>
 
                     <div>

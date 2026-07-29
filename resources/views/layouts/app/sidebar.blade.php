@@ -11,6 +11,29 @@
             </flux:sidebar.header>
 
             <flux:sidebar.nav>
+                @if(auth()->check() && auth()->user()->role === 'admin')
+                <div class="px-2 pb-2 pt-1">
+                    <form action="{{ route('admin.users.search') }}" method="GET">
+                        <div class="flex items-center gap-2 bg-zinc-100 dark:bg-zinc-800 rounded-xl px-3 py-2 focus-within:ring-1 focus-within:ring-yellow-500 transition-all">
+                            <svg class="w-3.5 h-3.5 text-zinc-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+                            </svg>
+                            <input
+                                type="text"
+                                name="q"
+                                placeholder="ইউজার খুঁজুন..."
+                                class="flex-1 bg-transparent outline-none text-xs text-zinc-700 dark:text-zinc-200 placeholder-zinc-400 min-w-0"
+                            >
+                            <button type="submit" class="flex-shrink-0 text-zinc-400 hover:text-yellow-500 transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                @endif
+
                 <flux:sidebar.group :heading="__('Platform')" class="grid">
                     @if(!auth()->check() || auth()->user()->role !== 'admin')
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>

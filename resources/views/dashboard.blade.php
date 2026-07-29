@@ -13,7 +13,7 @@
 
             @if (auth()->user()->role === 'company')
                 <!-- Employer Dashboard -->
-                <div class="bg-black text-white rounded-3xl p-10 md:p-14 relative overflow-hidden mb-10 shadow-xl shadow-black/10">
+                <div class="hidden md:block bg-black text-white rounded-3xl p-10 md:p-14 relative overflow-hidden mb-10 shadow-xl shadow-black/10">
                     <div class="absolute -right-24 -top-24 w-96 h-96 bg-yellow-500 rounded-full mix-blend-screen filter blur-[80px] opacity-30"></div>
                     <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center">
                         <div>
@@ -102,7 +102,7 @@
                 <livewire:employer.my-shifts />
             @else
                 <!-- Student Dashboard -->
-                <div class="bg-black text-white rounded-3xl p-10 md:p-14 relative overflow-hidden mb-10 shadow-xl shadow-black/10">
+                <div class="hidden md:block bg-black text-white rounded-3xl p-10 md:p-14 relative overflow-hidden mb-10 shadow-xl shadow-black/10">
                     <div class="absolute -right-24 -top-24 w-96 h-96 bg-yellow-500 rounded-full mix-blend-screen filter blur-[80px] opacity-30"></div>
                     
                     <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center">
@@ -124,8 +124,11 @@
                     </div>
                 </div>
 
-                <!-- Verification Status -->
-                <div class="mb-8">
+                <!-- Student dashboard: flex-col, reorder on mobile -->
+                <div class="flex flex-col">
+
+                <!-- Verification Status (bottom on mobile, top on md+) -->
+                <div class="mb-8 order-3 md:order-1">
                     @if(auth()->user()->isVerified())
                         <div class="bg-indigo-50 border border-indigo-200 rounded-3xl p-8 flex items-center shadow-sm">
                             <div class="w-14 h-14 bg-indigo-500 text-white rounded-2xl flex items-center justify-center mr-5 shadow-lg shadow-indigo-500/30">
@@ -170,8 +173,8 @@
                     @endif
                 </div>
 
-                <!-- Subscription Status -->
-                <div class="mb-12">
+                <!-- Subscription Status (bottom on mobile, top on md+) -->
+                <div class="mb-8 order-4 md:order-2">
                     @if (auth()->user()->hasActiveSubscription())
                         <div class="bg-white border-2 border-green-400 rounded-3xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between shadow-xl shadow-green-500/10 relative overflow-hidden">
                             <div class="absolute right-0 top-0 w-64 h-64 bg-green-400 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
@@ -238,7 +241,7 @@
                 @endphp
 
                 <!-- Stats/Actions Grid -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8 order-1 md:order-3">
                     <!-- Total Earnings -->
                     <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl p-6 shadow-lg shadow-green-500/30 text-white flex flex-col justify-between">
                         <div class="flex justify-between items-start mb-4">
@@ -295,7 +298,7 @@
                 </div>
 
                 <!-- Applications List -->
-                <div class="mb-12">
+                <div class="mb-8 order-2 md:order-4">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-bold text-gray-900">আপনার এপ্লাইকৃত শিফটসমূহ</h2>
                     </div>
@@ -377,6 +380,8 @@
                             <p class="text-gray-500">আপনি এখনও কোনো শিফটে এপ্লাই করেননি।</p>
                         </div>
                     @endif
+                </div>
+                <!-- end student dashboard flex container -->
                 </div>
             @endif
 

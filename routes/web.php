@@ -22,6 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::view('dashboard', 'admin.dashboard')->name('dashboard');
+    Route::get('users/search', \App\Livewire\Admin\UserProfileSearch::class)->name('users.search');
     Route::view('users', 'admin.users')->name('users');
     Route::view('payment-methods', 'admin.payment-methods')->name('payment-methods');
     Route::view('jobs', 'admin.jobs')->name('jobs');

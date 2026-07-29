@@ -25,6 +25,12 @@
                     </div>
 
                     <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">ফোন নম্বর <span class="text-red-500">*</span></label>
+                        <input id="phone" type="tel" name="phone" value="{{ old('phone') }}" required placeholder="01XXXXXXXXX" class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-yellow-500 focus:border-yellow-500 block p-3.5 transition-colors">
+                        @error('phone') <span class="mt-2 text-sm text-red-600">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
                         <label for="password" class="block text-sm font-medium text-gray-700 mb-2">পাসওয়ার্ড</label>
                         <input id="password" type="password" name="password" required placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-yellow-500 focus:border-yellow-500 block p-3.5 transition-colors">
                         @error('password') <span class="mt-2 text-sm text-red-600">{{ $message }}</span> @enderror
