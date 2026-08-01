@@ -28,7 +28,7 @@ class Index extends Component
             'icon' => 'required|image|max:1024',
         ]);
 
-        $iconPath = $this->icon->store('categories', 'public');
+        $iconPath = $this->icon->store('categories', 'uploads');
 
         Category::create([
             'name' => $this->name,
@@ -66,9 +66,9 @@ class Index extends Component
 
         if ($this->edit_icon) {
             if ($category->icon) {
-                Storage::disk('public')->delete($category->icon);
+                Storage::disk('uploads')->delete($category->icon);
             }
-            $data['icon'] = $this->edit_icon->store('categories', 'public');
+            $data['icon'] = $this->edit_icon->store('categories', 'uploads');
         }
 
         $category->update($data);
@@ -81,7 +81,7 @@ class Index extends Component
     {
         $category = Category::findOrFail($id);
         if ($category->icon) {
-            Storage::disk('public')->delete($category->icon);
+            Storage::disk('uploads')->delete($category->icon);
         }
         $category->delete();
         session()->flash('success', 'Category deleted successfully.');

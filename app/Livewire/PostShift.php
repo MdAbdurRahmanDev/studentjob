@@ -19,6 +19,7 @@ class PostShift extends Component
 
     public function post()
     {
+        abort_if(Auth::user()->role !== 'company', 403, 'Unauthorized. Only employers can post shifts.');
         $validated = $this->validate([
             'title' => ['required', 'string', 'max:255'],
             'category_id' => ['required', 'exists:categories,id'],

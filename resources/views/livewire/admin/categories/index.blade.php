@@ -36,7 +36,7 @@
                             @if($isEditing && $existing_icon && !$edit_icon)
                                 <div class="mb-4">
                                     <span class="text-xs text-gray-500 mb-1 block">Current Icon:</span>
-                                    <img src="{{ Storage::url($existing_icon) }}" class="h-16 w-16 object-contain bg-gray-50 p-2 rounded border border-gray-200">
+                                    <img src="{{ Storage::disk('uploads')->url($existing_icon) }}" class="h-16 w-16 object-contain bg-gray-50 p-2 rounded border border-gray-200">
                                 </div>
                             @endif
 
@@ -105,7 +105,7 @@
                                     <td class="p-4">
                                         @if($category->icon)
                                             <div class="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center p-2 border border-gray-200">
-                                                <img src="{{ Storage::url($category->icon) }}" class="max-w-full max-h-full object-contain" alt="{{ $category->name }}">
+                                                <img src="{{ Storage::disk('uploads')->url($category->icon) }}" class="max-w-full max-h-full object-contain" alt="{{ $category->name }}">
                                             </div>
                                         @else
                                             <div class="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400 border border-gray-200">

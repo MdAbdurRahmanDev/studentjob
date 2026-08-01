@@ -32,7 +32,7 @@
                                     @if ($site_logo)
                                         <img src="{{ $site_logo->temporaryUrl() }}" alt="New Logo" class="h-20 w-auto rounded-xl object-contain bg-gray-50 dark:bg-gray-900 p-3 border-2 border-indigo-100 dark:border-indigo-900 shadow-inner">
                                     @elseif ($existing_logo)
-                                        <img src="{{ Storage::url($existing_logo) }}" alt="Current Logo" class="h-20 w-auto rounded-xl object-contain bg-gray-50 dark:bg-gray-900 p-3 border border-gray-200 dark:border-gray-700 shadow-sm group-hover:border-indigo-300 transition-colors">
+                                        <img src="{{ Storage::disk('uploads')->url($existing_logo) }}" alt="Current Logo" class="h-20 w-auto rounded-xl object-contain bg-gray-50 dark:bg-gray-900 p-3 border border-gray-200 dark:border-gray-700 shadow-sm group-hover:border-indigo-300 transition-colors">
                                     @endif
                                 </div>
                             @endif
@@ -61,7 +61,7 @@
                                     @if ($site_favicon)
                                         <img src="{{ $site_favicon->temporaryUrl() }}" alt="New Favicon" class="h-14 w-14 rounded-xl object-contain bg-gray-50 dark:bg-gray-900 p-2 border-2 border-indigo-100 dark:border-indigo-900 shadow-inner">
                                     @elseif ($existing_favicon)
-                                        <img src="{{ Storage::url($existing_favicon) }}" alt="Current Favicon" class="h-14 w-14 rounded-xl object-contain bg-gray-50 dark:bg-gray-900 p-2 border border-gray-200 dark:border-gray-700 shadow-sm group-hover:border-indigo-300 transition-colors">
+                                        <img src="{{ Storage::disk('uploads')->url($existing_favicon) }}" alt="Current Favicon" class="h-14 w-14 rounded-xl object-contain bg-gray-50 dark:bg-gray-900 p-2 border border-gray-200 dark:border-gray-700 shadow-sm group-hover:border-indigo-300 transition-colors">
                                     @endif
                                 </div>
                             @endif
@@ -100,6 +100,13 @@
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">WhatsApp Number</label>
                         <input type="text" wire:model="whatsapp_number" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 hover:bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm" placeholder="e.g. +8801700000000">
                         @error('whatsapp_number') <span class="text-red-500 text-xs font-medium mt-2 flex items-center">{{ $message }}</span> @enderror
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="mb-8 mt-8">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Phone Number (Calls)</label>
+                        <input type="text" wire:model="phone_call" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 hover:bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm" placeholder="e.g. +8801700000000">
+                        @error('phone_call') <span class="text-red-500 text-xs font-medium mt-2 flex items-center">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="pt-6 border-t border-gray-100 dark:border-gray-700 flex justify-end">

@@ -39,7 +39,7 @@ class Index extends Component
             'image' => 'required|image|max:2048',
         ]);
 
-        $imagePath = $this->image->store('ads', 'public');
+        $imagePath = $this->image->store('ads', 'uploads');
 
         Ad::create([
             'title' => $this->title,
@@ -94,9 +94,9 @@ class Index extends Component
 
         if ($this->edit_image) {
             if ($ad->image) {
-                Storage::disk('public')->delete($ad->image);
+                Storage::disk('uploads')->delete($ad->image);
             }
-            $data['image'] = $this->edit_image->store('ads', 'public');
+            $data['image'] = $this->edit_image->store('ads', 'uploads');
         }
 
         $ad->update($data);
@@ -115,7 +115,7 @@ class Index extends Component
     {
         $ad = Ad::findOrFail($id);
         if ($ad->image) {
-            Storage::disk('public')->delete($ad->image);
+            Storage::disk('uploads')->delete($ad->image);
         }
         $ad->delete();
         session()->flash('success', 'Ad deleted successfully.');

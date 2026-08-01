@@ -44,6 +44,8 @@ class ShiftDetails extends Component
             'applicationMessage' => 'required|min:10',
         ]);
 
+        abort_if($this->shift->status !== 'OPEN', 403, 'This shift is no longer open for applications.');
+
         \App\Models\Application::create([
             'user_id' => auth()->id(),
             'job_id' => $this->shift->id,

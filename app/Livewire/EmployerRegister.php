@@ -29,7 +29,7 @@ class EmployerRegister extends Component
         // Ensure role is company
         $validated['role'] = 'company';
 
-        $user = User::create($validated);
+        $user = User::forceCreate($validated);
 
         event(new Registered($user));
 

@@ -1,4 +1,8 @@
 <div>
+    <x-slot:title>{{ $shift->title }}</x-slot:title>
+    <x-slot:seoDescription>{{ \Illuminate\Support\Str::limit(strip_tags($shift->description), 160) }}</x-slot:seoDescription>
+    <x-slot:seoKeywords>{{ $shift->title }}, {{ $shift->employer_name }}, {{ $shift->location }}, student job bd, part time job</x-slot:seoKeywords>
+
     <!-- Header Section -->
     <div class="bg-black py-20 relative overflow-hidden">
         <!-- Abstract shapes -->

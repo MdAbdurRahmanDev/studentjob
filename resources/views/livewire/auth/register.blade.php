@@ -1,4 +1,4 @@
-<x-layouts.front>
+<x-layouts.front title="অ্যাকাউন্ট খুলুন" seoDescription="নতুন শিফট খুঁজে পেতে আজই StudentJob এ অ্যাকাউন্ট তৈরি করুন। আপনার ক্যারিয়ার শুরু হোক এখান থেকে।" seoKeywords="রেজিস্টার, অ্যাকাউন্ট, register, student job bd, job portal">
     <div class="min-h-[calc(100vh-200px)] bg-[#faf9f6] flex items-center justify-center py-12 px-6">
         <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 overflow-hidden w-full max-w-4xl flex flex-col md:flex-row">
             
@@ -9,7 +9,7 @@
                     <p class="text-gray-500 text-sm">নতুন শিফট খুঁজে পেতে আজই যুক্ত হোন</p>
                 </div>
                 
-                <form method="POST" action="{{ route('register.store') }}" class="space-y-6">
+                <form method="POST" action="{{ route('register.custom') }}" class="space-y-6">
                     @csrf
 
                     <div>

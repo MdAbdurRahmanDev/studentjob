@@ -59,7 +59,7 @@
                             
                             @if($isEditing && $existing_image)
                                 <div class="mb-2">
-                                    <img src="{{ Storage::url($existing_image) }}" alt="Current Image" class="h-20 rounded object-cover">
+                                    <img src="{{ Storage::disk('uploads')->url($existing_image) }}" alt="Current Image" class="h-20 rounded object-cover">
                                 </div>
                             @endif
                             
@@ -112,7 +112,7 @@
                                     <td class="px-6 py-4">
                                         <div class="h-12 w-12 rounded overflow-hidden shadow-sm border border-gray-200 dark:border-gray-600 bg-gray-100">
                                             @if($ad->image)
-                                                <img src="{{ Storage::url($ad->image) }}" class="h-full w-full object-cover" alt="{{ $ad->title }}">
+                                                <img src="{{ Storage::disk('uploads')->url($ad->image) }}" class="h-full w-full object-cover" alt="{{ $ad->title }}">
                                             @endif
                                         </div>
                                     </td>

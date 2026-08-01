@@ -1,0 +1,22 @@
+
+Name	     Meaning
+api_key	      Required Your API KEY is used to authenticate in our system.
+msg	Required  The body content of your message. (For GET method, please use url encoding to send special characters.)
+to	Required  The recipient numbers. Multiple numbers must be separated by comma(,). The Number must start with country code(880) or Standard 01X.
+schedule	  Optional The schedule date and time to send your message. Date and time must be formatted as Y-m-d H:i:s (eg. 2026-07-30 14:06:46 )
+sender_id	  Optional If you have an approved Sender ID, you can use this parameter to set your Sender ID as from in you messages.
+content_id	  Optional (Required for bulk sms) If you have an approved campaign content, you can use this parameter to set the ID of the content to use.
+
+https://api.sms.net.bd/sendsms?api_key={YOUR_API_KEY}&msg={YOUR_MSG}&to=8801800000000
+
+Please remove curly braces ({}) around the parameters.
+Response
+{
+    "error": 0,
+    "msg": "Request successfully submitted",
+    "data": {
+        "request_id": 0000
+    }
+}
+          
+

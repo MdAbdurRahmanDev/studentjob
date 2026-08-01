@@ -1,10 +1,38 @@
+@props(['title' => null, 'seoKeywords' => null, 'seoDescription' => null])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        @php
+            $siteName = \App\Models\Setting::get('site_name', config('app.name', 'StudentJob'));
+            $globalSeoTitle = \App\Models\Setting::get('seo_title', $siteName);
+            
+            // Check if slots are passed (for Livewire components) or direct props
+            $currentTitle = $title instanceof \Illuminate\View\ComponentSlot ? (string) $title : $title;
+            $currentKeywords = $seoKeywords instanceof \Illuminate\View\ComponentSlot ? (string) $seoKeywords : $seoKeywords;
+            $currentDescription = $seoDescription instanceof \Illuminate\View\ComponentSlot ? (string) $seoDescription : $seoDescription;
+
+            $finalTitle = filled($currentTitle) ? $currentTitle.' - '.$globalSeoTitle : $globalSeoTitle;
+            $finalKeywords = filled($currentKeywords) ? $currentKeywords : \App\Models\Setting::get('seo_keywords', '');
+            $finalDescription = filled($currentDescription) ? $currentDescription : \App\Models\Setting::get('seo_description', '');
+            $siteFavicon = \App\Models\Setting::get('site_favicon', '');
+        @endphp
+
+        <title>{{ $finalTitle }}</title>
+
+        @if(filled($finalKeywords))
+            <meta name="keywords" content="{{ $finalKeywords }}">
+        @endif
+
+        @if(filled($finalDescription))
+            <meta name="description" content="{{ $finalDescription }}">
+        @endif
+
+        @if ($siteFavicon)
+            <link rel="icon" href="{{ Storage::disk('uploads')->url($siteFavicon) }}">
+        @endif
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
@@ -26,7 +54,7 @@
                     <a href="{{ route('home') }}" wire:navigate
                        class="text-lg font-bold flex items-center gap-1.5 whitespace-nowrap">
                         @if($siteLogo)
-                            <img src="{{ Storage::url($siteLogo) }}" alt="{{ $siteName }}" class="h-7 w-auto">
+                            <img src="{{ Storage::disk('uploads')->url($siteLogo) }}" alt="{{ $siteName }}" class="h-7 w-auto">
                         @endif
                         {{ $siteName }}
                     </a>
@@ -115,7 +143,7 @@
                     <div class="flex items-center">
                         <a href="{{ route('home') }}" wire:navigate class="text-xl font-bold flex items-center">
                             @if($siteLogo)
-                                <img src="{{ Storage::url($siteLogo) }}" alt="{{ $siteName }}" class="h-8 w-auto mr-2">
+                                <img src="{{ Storage::disk('uploads')->url($siteLogo) }}" alt="{{ $siteName }}" class="h-8 w-auto mr-2">
                             @endif
                             {{ $siteName }}
                         </a>
@@ -196,25 +224,44 @@
             </div>
         </footer>
 
-        <!-- Floating Action Button (Fixed to viewport) -->
-        @php $waNumber = \App\Models\Setting::get('whatsapp_number', ''); @endphp
-        @if($waNumber)
-        <div class="fixed right-6 bottom-6 md:right-8 md:bottom-8 z-50">
-            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $waNumber) }}" target="_blank" class="bg-yellow-500 hover:bg-yellow-600 text-black w-14 h-14 rounded-full shadow-lg shadow-yellow-500/30 transition-transform hover:scale-110 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M11.99 2C6.47 2 2 6.48 2 12c0 1.76.46 3.42 1.25 4.89L2 22l5.34-1.18c1.42.73 3.03 1.15 4.65 1.15 5.52 0 10-4.48 10-10S17.51 2 11.99 2zm5.72 14.28c-.24.67-1.39 1.26-1.95 1.32-.48.06-1.1.18-3.13-.67-2.45-1.02-4.04-3.52-4.16-3.69-.13-.17-1-1.32-1-2.52 0-1.2.62-1.79.84-2.02.22-.24.48-.3.64-.3h.45c.16 0 .38-.06.59.44.22.51.68 1.66.74 1.79.06.13.11.28.02.46-.08.18-.13.3-.25.44-.13.14-.26.3-.37.4-.13.13-.26.27-.11.52.14.25.64 1.07 1.38 1.72.96.85 1.76 1.11 2 1.24.24.13.38.11.52-.06.14-.17.61-.71.77-.95.16-.24.32-.2.54-.12.22.08 1.41.67 1.65.79.24.12.4.18.45.28.06.1.06.58-.18 1.25z"/>
-                </svg>
+        <!-- Floating Action Buttons (Fixed to viewport) -->
+        <style>
+            .floating-actions {
+                bottom: 90px;
+                z-index: 40;
+            }
+            @media (min-width: 768px) {
+                .floating-actions {
+                    bottom: 32px;
+                }
+            }
+        </style>
+        <div class="fixed right-6 md:right-8 flex flex-col gap-4 floating-actions">
+            @php 
+                $waNumber = \App\Models\Setting::get('whatsapp_number', '');
+                $phoneCall = \App\Models\Setting::get('phone_call', '');
+            @endphp
+            
+            @if($phoneCall)
+            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phoneCall) }}" class="w-14 h-14 rounded-full shadow-lg transition-transform hover:scale-110 flex items-center justify-center bg-white border border-gray-100 overflow-hidden p-2.5">
+                <img src="{{ asset('assets/phone-call.png') }}" alt="Call Us" class="w-full h-full object-contain">
             </a>
-        </div>
-        @else
-        <div class="fixed right-6 bottom-6 md:right-8 md:bottom-8 z-50">
+            @endif
+
+            @if($waNumber)
+            <a href="https://wa.me/{{ preg_replace('/[^0-9+]/', '', $waNumber) }}" target="_blank" class="w-14 h-14 rounded-full shadow-lg transition-transform hover:scale-110 flex items-center justify-center bg-white border border-gray-100 overflow-hidden p-2.5">
+                <img src="{{ asset('assets/whatsapp.png') }}" alt="WhatsApp" class="w-full h-full object-contain">
+            </a>
+            @endif
+            
+            @if(!$phoneCall && !$waNumber)
             <button class="bg-yellow-500 hover:bg-yellow-600 text-black w-14 h-14 rounded-full shadow-lg shadow-yellow-500/30 transition-transform hover:scale-110 flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
             </button>
+            @endif
         </div>
-        @endif
         
         <!-- Mobile Bottom Navbar -->
         @php $navCategories = \App\Models\Category::withCount('jobs')->get(); @endphp
@@ -232,9 +279,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="{{ request()->routeIs('home') ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="{{ request()->routeIs('home') ? '0' : '2' }}">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 12L5 10M5 10L12 3L19 10M5 10V20C5 20.5523 5.44772 21 6 21H9M19 10L21 12M19 10V20C19 20.5523 18.5523 21 18 21H15M9 21V15C9 14.4477 9.44772 14 10 14H14C14.5523 14 15 14.4477 15 15V21M9 21H15" />
                             </svg>
-                            @if(request()->routeIs('home'))
-                                <span class="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-yellow-500 rounded-full"></span>
-                            @endif
+
                         </span>
                         <span class="text-[10px] font-medium leading-none {{ request()->routeIs('home') ? 'text-yellow-500' : '' }}">হোম</span>
                     </a>
@@ -248,10 +293,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
-                            @if(request()->routeIs('shifts.index'))
-                                <span x-show="!searchOpen" class="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-yellow-500 rounded-full"></span>
-                            @endif
-                            <span x-show="searchOpen" class="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-yellow-500 rounded-full"></span>
+
                         </span>
                         <span class="text-[10px] font-medium leading-none {{ request()->routeIs('shifts.index') ? 'text-yellow-500' : '' }}">সার্চ</span>
                     </button>
@@ -265,7 +307,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                             </svg>
-                            <span x-show="categoryOpen" class="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-yellow-500 rounded-full"></span>
+
                         </span>
                         <span class="text-[10px] font-medium leading-none">ক্যাটাগরি</span>
                     </button>
@@ -275,12 +317,10 @@
                     <a href="{{ route('dashboard') }}" wire:navigate
                        class="flex-1 flex flex-col items-center justify-center gap-0.5 group transition-colors {{ request()->routeIs('dashboard') ? 'text-yellow-500' : 'text-gray-500 hover:text-yellow-500' }}">
                         <span class="relative flex items-center justify-center w-9 h-9 rounded-full transition-all {{ request()->routeIs('dashboard') ? 'bg-yellow-50' : 'group-hover:bg-yellow-50' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="{{ request()->routeIs('dashboard') ? 'currentColor' : 'none' }}" stroke="{{ request()->routeIs('dashboard') ? 'none' : 'currentColor' }}" stroke-width="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            @if(request()->routeIs('dashboard'))
-                                <span class="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-yellow-500 rounded-full"></span>
-                            @endif
+
                         </span>
                         <span class="text-[10px] font-medium leading-none {{ request()->routeIs('dashboard') ? 'text-yellow-500' : '' }}">আমার অ্যাকাউন্ট</span>
                     </a>
@@ -446,7 +486,7 @@
                            class="flex flex-col items-center justify-center bg-gray-50 hover:bg-yellow-50 border-2 border-transparent hover:border-yellow-300 rounded-2xl p-3 transition-all duration-200 text-center">
                             <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-2 shadow-sm overflow-hidden">
                                 @if($cat->icon)
-                                    <img src="{{ Storage::url($cat->icon) }}" class="w-7 h-7 object-contain" alt="{{ $cat->name }}">
+                                    <img src="{{ Storage::disk('uploads')->url($cat->icon) }}" class="w-7 h-7 object-contain" alt="{{ $cat->name }}">
                                 @else
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />

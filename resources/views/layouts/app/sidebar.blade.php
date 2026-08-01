@@ -69,14 +69,23 @@
                     <flux:sidebar.item icon="banknotes" :href="route('admin.transactions')" :current="request()->routeIs('admin.transactions')" wire:navigate>
                         {{ __('Transactions') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="no-symbol" :href="route('admin.blocked-ips')" :current="request()->routeIs('admin.blocked-ips')" wire:navigate>
+                        {{ __('Blocked IPs') }}
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
 
                 <flux:sidebar.group :heading="__('Settings')" class="grid">
                     <flux:sidebar.item icon="cog-6-tooth" :href="route('admin.settings.general')" :current="request()->routeIs('admin.settings.general')" wire:navigate>
                         {{ __('General Settings') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="magnifying-glass-circle" :href="route('admin.settings.seo')" :current="request()->routeIs('admin.settings.seo')" wire:navigate>
+                        {{ __('SEO Settings') }}
+                    </flux:sidebar.item>
                     <flux:sidebar.item icon="window" :href="route('admin.settings.home-page')" :current="request()->routeIs('admin.settings.home-page')" wire:navigate>
                         {{ __('Home Page Settings') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="device-phone-mobile" :href="route('admin.settings.sms')" :current="request()->routeIs('admin.settings.sms')" wire:navigate>
+                        {{ __('SMS Settings') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
                 @endif

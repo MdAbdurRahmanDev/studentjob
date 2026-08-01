@@ -28,7 +28,7 @@
                             <div class="flex items-center space-x-3 mb-2">
                                 @if($method->logo)
                                     <div class="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-white p-1">
-                                        <img src="{{ Storage::url($method->logo) }}" alt="{{ $method->name }}" class="w-full h-full object-contain">
+                                        <img src="{{ Storage::disk('uploads')->url($method->logo) }}" alt="{{ $method->name }}" class="w-full h-full object-contain">
                                     </div>
                                 @else
                                     <div class="w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center">

@@ -1,4 +1,4 @@
-<x-layouts.front>
+<x-layouts.front title="লগ ইন" seoDescription="StudentJob এ লগ ইন করে আপনার পরবর্তী শিফট খুঁজুন। হাজারো শিক্ষার্থী প্রতিদিন তাদের পছন্দমতো কাজ করছে।" seoKeywords="লগ ইন, login, student job, part time job">
     <div class="min-h-[calc(100vh-200px)] bg-[#faf9f6] flex items-center justify-center py-12 px-6">
         <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 overflow-hidden w-full max-w-4xl flex flex-col md:flex-row">
             
@@ -48,7 +48,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('login.store') }}" class="space-y-6">
+                <form method="POST" action="{{ route('login.custom') }}" class="space-y-6">
                     @csrf
 
                     <div>

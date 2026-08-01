@@ -69,7 +69,7 @@
                         <div
                             class="ad-slide absolute inset-0 w-full h-full transition-opacity duration-1000 {{ $index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0' }}">
                             @if ($ad->image)
-                                <img src="{{ Storage::url($ad->image) }}"
+                                <img src="{{ Storage::disk('uploads')->url($ad->image) }}"
                                     class="absolute inset-0 w-full h-full object-cover" alt="{{ $ad->title }}">
                             @else
                                 <div class="absolute inset-0 w-full h-full bg-gray-800"></div>
