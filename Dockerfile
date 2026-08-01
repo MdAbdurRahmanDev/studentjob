@@ -19,3 +19,7 @@ RUN php artisan view:cache || true
 EXPOSE 80
 
 CMD ["php", "artisan", "octane:frankenphp", "--host=0.0.0.0", "--port=80"]
+# Update Nginx to serve from the public directory
+RUN sed -i 's!root /app;!root /app/public;!g' /etc/nginx/sites-available/default || true
+RUN sed -i 's!root /var/www/html;!root /var/www/html/public;!g' /etc/nginx/sites-available/default || true
+RUN sed -i 's!root /var/www/html;!root /var/www/html/public;!g' /etc/nginx/conf.d/default.conf || true
