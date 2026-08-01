@@ -1,21 +1,21 @@
-FROM dunglas/frankenphp:php8.3
-
-WORKDIR /app
-
-COPY . .
+FROM php:8.3-fpm
 
 RUN apt-get update && apt-get install -y \
-    git unzip libzip-dev \
+    git unzip curl libzip-dev libpng-dev libonig-dev libxml2-dev nginx \
     && docker-php-ext-install pdo_mysql zip
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+WORKDIR /var/www/html
+
+COPY . .
+
 RUN composer install --no-dev --optimize-autoloader
 
-RUN php artisan config:cache || true
-RUN php artisan route:cache || true
-RUN php artisan view:cache || true
+RUN mkdir -p storage/framework/{cache,sessions,views} \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
-EXPOSE 80
+EXPOSE 9000
 
-CMD ["php", "artisan", "octane:frankenphp", "--host=0.0.0.0", "--port=80"]
+CMD ["php-fpm"]
