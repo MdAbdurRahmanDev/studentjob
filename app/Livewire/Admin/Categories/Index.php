@@ -25,7 +25,7 @@ class Index extends Component
     {
         $this->validate([
             'name' => 'required|string|max:255',
-            'icon' => 'required|image|max:1024',
+            'icon' => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:1024',
         ]);
 
         $iconPath = $this->icon->store('categories', 'uploads');
@@ -57,7 +57,7 @@ class Index extends Component
     {
         $this->validate([
             'edit_name' => 'required|string|max:255',
-            'edit_icon' => 'nullable|image|max:1024',
+            'edit_icon' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024',
         ]);
 
         $category = Category::findOrFail($this->edit_id);

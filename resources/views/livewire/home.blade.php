@@ -185,7 +185,7 @@
                         class="bg-white rounded-2xl p-6 flex flex-col items-center justify-center text-center border-2 border-transparent hover:border-yellow-300 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                         <div class="w-14 h-14 bg-gray-50 rounded-full flex items-center justify-center mb-4 overflow-hidden transition-colors">
                             @if ($category->icon)
-                                <img src="{{ Storage::url($category->icon) }}" class="w-8 h-8 object-contain" alt="{{ $category->name }}">
+                                <img src="{{ Storage::disk('uploads')->url($category->icon) }}" class="w-8 h-8 object-contain" alt="{{ $category->name }}">
                             @else
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -218,7 +218,7 @@
                         class="bg-white rounded-2xl p-4 flex flex-col items-center justify-center text-center border-2 border-transparent hover:border-yellow-300 transition-all duration-300">
                         <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mb-3 overflow-hidden">
                             @if ($category->icon)
-                                <img src="{{ Storage::url($category->icon) }}" class="w-7 h-7 object-contain" alt="{{ $category->name }}">
+                                <img src="{{ Storage::disk('uploads')->url($category->icon) }}" class="w-7 h-7 object-contain" alt="{{ $category->name }}">
                             @else
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -357,7 +357,7 @@
                     class="bg-gray-50 rounded-2xl p-3 flex flex-col items-center justify-center text-center border-2 border-transparent hover:border-yellow-300 transition-all duration-300">
                     <div class="w-11 h-11 bg-white rounded-full flex items-center justify-center mb-2 overflow-hidden">
                         @if ($category->icon)
-                            <img src="{{ Storage::url($category->icon) }}" class="w-6 h-6 object-contain" alt="{{ $category->name }}">
+                            <img src="{{ Storage::disk('uploads')->url($category->icon) }}" class="w-6 h-6 object-contain" alt="{{ $category->name }}">
                         @else
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />

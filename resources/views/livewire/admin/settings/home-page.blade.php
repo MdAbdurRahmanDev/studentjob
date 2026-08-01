@@ -90,9 +90,18 @@
                                             <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Description</label>
                                             <textarea wire:model="home_cards.{{ $index }}.description" rows="2" class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm"></textarea>
                                         </div>
-                                        <div>
-                                            <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Image URL</label>
-                                            <input type="url" wire:model="home_cards.{{ $index }}.image_url" class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm">
+                                        <!-- Image Upload -->
+                                        <div class="md:col-span-2">
+                                            <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Image Upload</label>
+                                            <div class="flex items-center space-x-4">
+                                                @if(isset($home_cards[$index]['image']) && is_object($home_cards[$index]['image']))
+                                                    <img src="{{ $home_cards[$index]['image']->temporaryUrl() }}" class="w-16 h-16 object-cover rounded-lg border border-gray-200">
+                                                @elseif(!empty($home_cards[$index]['image_url']))
+                                                    <img src="{{ $home_cards[$index]['image_url'] }}" class="w-16 h-16 object-cover rounded-lg border border-gray-200">
+                                                @endif
+                                                <input type="file" wire:model="home_cards.{{ $index }}.image" class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm">
+                                            </div>
+                                            <div wire:loading wire:target="home_cards.{{ $index }}.image" class="text-xs text-indigo-600 mt-1">Uploading...</div>
                                         </div>
                                         <div>
                                             <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Link Text & URL</label>

@@ -44,8 +44,8 @@ class General extends Component
     {
         $this->validate([
             'site_name' => 'required|string|max:255',
-            'site_logo' => 'nullable|image|max:2048',
-            'site_favicon' => 'nullable|image|max:1024|mimes:ico,png,jpg,svg',
+            'site_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
+            'site_favicon' => 'nullable|image|mimes:ico,png,jpg,svg,webp|max:1024',
             'footer_copyright' => 'nullable|string|max:255',
             'footer_text' => 'nullable|string|max:255',
             'whatsapp_number' => 'nullable|string|max:255',

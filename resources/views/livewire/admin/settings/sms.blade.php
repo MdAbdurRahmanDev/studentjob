@@ -38,6 +38,14 @@
                         @error('sms_verification_text') <span class="text-red-500 text-xs font-medium mt-2 flex items-center">{{ $message }}</span> @enderror
                     </div>
 
+                    <!-- Password Reset SMS Text -->
+                    <div class="mb-8 mt-8">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Password Reset SMS Text</label>
+                        <textarea wire:model="sms_password_reset_text" rows="3" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 hover:bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm" placeholder="Your password reset code is: {otp}"></textarea>
+                        <p class="text-xs text-gray-500 mt-2 ml-1">Use <strong class="text-indigo-600">{otp}</strong> in the text where you want the 4-digit code to appear.</p>
+                        @error('sms_password_reset_text') <span class="text-red-500 text-xs font-medium mt-2 flex items-center">{{ $message }}</span> @enderror
+                    </div>
+
                     <div class="pt-6 border-t border-gray-100 dark:border-gray-700 flex justify-end">
                         <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-xl transition-all shadow-md hover:shadow-lg focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center disabled:opacity-50" wire:loading.attr="disabled">
                             <svg wire:loading wire:target="saveSettings" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

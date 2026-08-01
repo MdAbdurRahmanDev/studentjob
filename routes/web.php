@@ -25,8 +25,8 @@ Route::post('/register/custom', [\App\Http\Controllers\Auth\RegisterController::
 Route::get('/register/verify', [\App\Http\Controllers\Auth\RegisterController::class, 'showVerifyOtp'])->name('register.verify')->middleware(['guest']);
 Route::post('/register/verify', [\App\Http\Controllers\Auth\RegisterController::class, 'verifyOtp'])->name('register.verify.post')->middleware(['guest', 'throttle:5,1']);
 
-
-
+// Custom Auth Route for Forgot Password (OTP)
+Route::get('/forgot-password', \App\Livewire\Auth\ForgotPassword::class)->name('password.request')->middleware(['guest']);
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
     Route::get('/subscribe', \App\Livewire\Subscribe::class)->name('subscribe');

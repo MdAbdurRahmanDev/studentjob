@@ -25,7 +25,7 @@ new class extends Component
             'name' => 'required|string|max:255',
             'type' => 'required|in:personal,agent,others',
             'number' => 'required|string|max:255',
-            'logo' => 'nullable|image|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
             'is_active' => 'boolean',
         ];
     }
@@ -191,7 +191,7 @@ new class extends Component
                     @elseif($existingLogo)
                         <div class="mt-2">
                             <p class="text-xs text-zinc-500 mb-1">Current Logo:</p>
-                            <img src="{{ Storage::url($existingLogo) }}" class="h-12 rounded border p-1 bg-white">
+                            <img src="{{ Storage::disk('uploads')->url($existingLogo) }}" class="h-12 rounded border p-1 bg-white">
                         </div>
                     @endif
                 </div>

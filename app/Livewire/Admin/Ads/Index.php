@@ -36,7 +36,7 @@ class Index extends Component
             'description' => 'nullable|string',
             'link' => 'nullable|string|max:255',
             'tag' => 'nullable|string|max:50',
-            'image' => 'required|image|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
         ]);
 
         $imagePath = $this->image->store('ads', 'uploads');
@@ -79,7 +79,7 @@ class Index extends Component
             'edit_description' => 'nullable|string',
             'edit_link' => 'nullable|string|max:255',
             'edit_tag' => 'nullable|string|max:50',
-            'edit_image' => 'nullable|image|max:2048',
+            'edit_image' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
         ]);
 
         $ad = Ad::findOrFail($this->edit_id);

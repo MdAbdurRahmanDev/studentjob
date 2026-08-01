@@ -26,11 +26,11 @@ new class extends Component
     {
         $rules = [
             'document_type' => 'required|in:nid,student_id',
-            'front_image' => 'required|image|max:5120', // 5MB Max
+            'front_image' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120', // 5MB Max
         ];
 
         if ($this->document_type === 'nid') {
-            $rules['back_image'] = 'required|image|max:5120';
+            $rules['back_image'] = 'required|image|mimes:jpeg,png,jpg,webp|max:5120';
         }
 
         $this->validate($rules);

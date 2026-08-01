@@ -4,9 +4,12 @@ namespace App\Livewire\Admin\Settings;
 
 use Livewire\Component;
 use App\Models\Setting;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class HomePage extends Component
 {
+    use WithFileUploads;
     public $home_hero_title = '';
     public $home_hero_subtitle = '';
     public $home_middle_title = '';
@@ -43,6 +46,11 @@ class HomePage extends Component
         
         $savedCards = Setting::get('home_cards');
         $this->home_cards = $savedCards ? json_decode($savedCards, true) : $defaultCards;
+
+        // Initialize 'image' key for file uploads
+        foreach ($this->home_cards as &$card) {
+            $card['image'] = null;
+        }
     }
 
     public function addCard()
@@ -51,6 +59,7 @@ class HomePage extends Component
             'title' => '',
             'description' => '',
             'image_url' => '',
+            'image' => null,
             'tag' => '',
             'link_text' => '',
             'link' => '',
@@ -74,18 +83,32 @@ class HomePage extends Component
             'home_cards' => 'array',
             'home_cards.*.title' => 'required|string',
             'home_cards.*.description' => 'required|string',
-            'home_cards.*.image_url' => 'required|url',
+            'home_cards.*.image' => 'nullable|image|max:2048',
             'home_cards.*.tag' => 'required|string',
             'home_cards.*.link_text' => 'required|string',
             'home_cards.*.link' => 'required|string',
         ]);
+
+        $cardsToSave = $this->home_cards;
+        foreach ($cardsToSave as &$card) {
+            if (isset($card['image']) && is_object($card['image'])) {
+                $path = $card['image']->store('home_cards', 'uploads');
+                $card['image_url'] = Storage::disk('uploads')->url($path);
+            }
+            unset($card['image']);
+        }
 
         Setting::set('home_hero_title', $this->home_hero_title);
         Setting::set('home_hero_subtitle', $this->home_hero_subtitle);
         Setting::set('home_middle_title', $this->home_middle_title);
         Setting::set('home_cards_title', $this->home_cards_title);
         Setting::set('home_cards_subtitle', $this->home_cards_subtitle);
-        Setting::set('home_cards', json_encode($this->home_cards, JSON_UNESCAPED_UNICODE));
+        Setting::set('home_cards', json_encode($cardsToSave, JSON_UNESCAPED_UNICODE));
+
+        // Reset image properties so they don't persist on subsequent requests
+        foreach ($this->home_cards as &$card) {
+            $card['image'] = null;
+        }
 
         session()->flash('success', 'Home Page Settings updated successfully.');
         $this->dispatch('settings-updated');

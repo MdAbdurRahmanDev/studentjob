@@ -38,6 +38,49 @@
         @livewireStyles
     </head>
     <body class="font-sans antialiased bg-gray-50 text-gray-900">
+        @if(session('success'))
+            <div x-data="{ show: true }" 
+                 x-show="show"
+                 class="fixed inset-0 z-[100] flex items-center justify-center px-4"
+                 style="display: none;">
+                
+                <!-- Backdrop -->
+                <div x-show="show"
+                     x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     x-transition:leave="transition ease-in duration-200"
+                     x-transition:leave-start="opacity-100"
+                     x-transition:leave-end="opacity-0"
+                     class="fixed inset-0 bg-black/40 backdrop-blur-sm"
+                     @click="show = false"></div>
+                     
+                <!-- Modal -->
+                <div x-show="show"
+                     x-transition:enter="transition ease-out duration-300 transform"
+                     x-transition:enter-start="opacity-0 translate-y-4 scale-95"
+                     x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                     x-transition:leave="transition ease-in duration-200 transform"
+                     x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                     x-transition:leave-end="opacity-0 translate-y-4 scale-95"
+                     class="relative bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full text-center border border-gray-100 z-[101]">
+                    
+                    <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
+                        <svg class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">সফল!</h3>
+                    <p class="text-gray-600 mb-8">{{ session('success') }}</p>
+                    
+                    <button @click="show = false" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-4 rounded-xl transition-colors">
+                        ঠিক আছে
+                    </button>
+                </div>
+            </div>
+        @endif
+
         <!-- Navbar -->
         <div class="bg-white border-b border-gray-100 z-50 relative shadow-sm">
             @php
@@ -236,31 +279,44 @@
                 }
             }
         </style>
-        <div class="fixed right-6 md:right-8 flex flex-col gap-4 floating-actions">
+        <div x-data="{ fabOpen: false }" class="fixed right-6 md:right-8 flex flex-col gap-4 floating-actions items-center z-50">
             @php 
                 $waNumber = \App\Models\Setting::get('whatsapp_number', '');
                 $phoneCall = \App\Models\Setting::get('phone_call', '');
             @endphp
             
-            @if($phoneCall)
-            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phoneCall) }}" class="w-14 h-14 rounded-full shadow-lg transition-transform hover:scale-110 flex items-center justify-center bg-white border border-gray-100 overflow-hidden p-2.5">
-                <img src="{{ asset('assets/phone-call.png') }}" alt="Call Us" class="w-full h-full object-contain">
-            </a>
-            @endif
+            <div x-show="fabOpen" 
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-4 scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-4 scale-95"
+                 class="flex flex-col gap-4 mb-2" 
+                 style="display: none;">
+                 
+                @if($phoneCall)
+                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phoneCall) }}" class="w-14 h-14 rounded-full shadow-lg transition-transform hover:scale-110 flex items-center justify-center bg-white border border-gray-100 overflow-hidden p-2.5">
+                    <img src="{{ asset('assets/phone-call.png') }}" alt="Call Us" class="w-full h-full object-contain">
+                </a>
+                @endif
 
-            @if($waNumber)
-            <a href="https://wa.me/{{ preg_replace('/[^0-9+]/', '', $waNumber) }}" target="_blank" class="w-14 h-14 rounded-full shadow-lg transition-transform hover:scale-110 flex items-center justify-center bg-white border border-gray-100 overflow-hidden p-2.5">
-                <img src="{{ asset('assets/whatsapp.png') }}" alt="WhatsApp" class="w-full h-full object-contain">
-            </a>
-            @endif
-            
-            @if(!$phoneCall && !$waNumber)
-            <button class="bg-yellow-500 hover:bg-yellow-600 text-black w-14 h-14 rounded-full shadow-lg shadow-yellow-500/30 transition-transform hover:scale-110 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                @if($waNumber)
+                <a href="https://wa.me/{{ preg_replace('/[^0-9+]/', '', $waNumber) }}" target="_blank" class="w-14 h-14 rounded-full shadow-lg transition-transform hover:scale-110 flex items-center justify-center bg-white border border-gray-100 overflow-hidden p-2.5">
+                    <img src="{{ asset('assets/whatsapp.png') }}" alt="WhatsApp" class="w-full h-full object-contain">
+                </a>
+                @endif
+            </div>
+
+            <!-- Customer Service Main Button -->
+            <button @click="fabOpen = !fabOpen" class="bg-yellow-500 hover:bg-yellow-600 text-black w-14 h-14 rounded-full shadow-lg shadow-yellow-500/30 transition-transform hover:scale-110 flex items-center justify-center relative p-2">
+                <!-- Customer Icon -->
+                <img x-show="!fabOpen" src="{{ asset('assets/call-center.png') }}" alt="Customer Service" class="w-full h-full object-contain transition-all">
+                <!-- Close Icon -->
+                <svg x-show="fabOpen" style="display: none;" xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            @endif
         </div>
         
         <!-- Mobile Bottom Navbar -->

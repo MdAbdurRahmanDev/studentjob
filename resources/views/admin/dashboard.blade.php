@@ -36,6 +36,7 @@
         $totalHired = \App\Models\Application::where('status', 'hired')->count();
         $totalEarningsPaid = \App\Models\Application::where('status', 'completed')->sum('earnings');
         $totalJobsOnPlatform = \App\Models\Job::count();
+        $totalCategories = \App\Models\Category::count();
 
         // Verification Stats
         $totalVerifiedUsers = \App\Models\UserVerification::where('status', 'approved')->count();
@@ -240,7 +241,7 @@
         @endphp
 
         <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mt-6 mb-4">Job & Application Analytics</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
             <!-- Total Completed Jobs -->
             <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-gray-100 dark:border-gray-700 flex flex-col justify-between hover:shadow-md transition-shadow">
                 <div class="flex justify-between items-start mb-4">
@@ -303,6 +304,19 @@
                 <div>
                     <h3 class="text-gray-500 dark:text-gray-400 text-sm font-semibold uppercase tracking-wider mb-1">প্ল্যাটফর্মের মোট শিফট</h3>
                     <p class="text-3xl font-bold text-gray-800 dark:text-gray-100">{{ $totalJobsOnPlatform }}</p>
+                </div>
+            </div>
+
+            <!-- Total Categories -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-gray-100 dark:border-gray-700 flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-purple-100 dark:bg-purple-900 rounded-lg text-purple-600 dark:text-purple-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-gray-500 dark:text-gray-400 text-sm font-semibold uppercase tracking-wider mb-1">মোট ক্যাটাগরি</h3>
+                    <p class="text-3xl font-bold text-gray-800 dark:text-gray-100">{{ $totalCategories }}</p>
                 </div>
             </div>
         </div>
