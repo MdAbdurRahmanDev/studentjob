@@ -1,21 +1,11 @@
-FROM php:8.3-fpm
+FROM webdevops/php-nginx:8.3
 
-RUN apt-get update && apt-get install -y \
-    git unzip curl libzip-dev libpng-dev libonig-dev libxml2-dev nginx \
-    && docker-php-ext-install pdo_mysql zip
+WORKDIR /app
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-WORKDIR /var/www/html
-
-COPY . .
+COPY . /app
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN mkdir -p storage/framework/{cache,sessions,views} \
-    && chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
+RUN chown -R application:application storage bootstrap/cache
 
-EXPOSE 9000
-
-CMD ["php-fpm"]
+EXPOSE 80
