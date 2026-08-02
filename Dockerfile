@@ -1,38 +1,40 @@
+# =========================
+# Frontend build
+# =========================
+FROM node:22-alpine AS frontend
 
-FROM php:8.3-fpm
+WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    git unzip curl zip \
-    libpng-dev \
-    libjpeg62-turbo-dev \
-    libfreetype6-dev \
-    libzip-dev \
-    libonig-dev \
-    libxml2-dev \
-    default-mysql-client
+COPY package*.json ./
+RUN npm ci
 
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+COPY resources ./resources
+COPY public ./public
+COPY vite.config.* ./
+COPY postcss.config.* ./
+COPY tailwind.config.* ./
 
-RUN docker-php-ext-install \
-    pdo_mysql \
-    mbstring \
-    exif \
-    bcmath \
-    gd \
-    zip
+RUN npm run build
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www/html
+# =========================
+# Laravel application
+# =========================
+FROM php:8.3-cli
+
+WORKDIR /app
+
+# Your existing PHP extensions/packages/etc.
+# ...
 
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+# Copy compiled Vite assets
+COPY --from=frontend /app/public/build ./public/build
 
-RUN php artisan storage:link || true
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction
 
-RUN chown -R www-data:www-data storage bootstrap/cache
-
-RUN chmod -R 775 storage bootstrap/cache
-
-CMD php artisan serve --host=0.0.0.0 --port=8000
+RUN php artisan optimize
