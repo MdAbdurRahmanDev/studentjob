@@ -11,6 +11,7 @@ class Sms extends Component
     public $sms_api_key = '';
     public $sms_verification_text = '';
     public $sms_password_reset_text = '';
+    public $sms_company_verification_text = '';
 
     public function mount()
     {
@@ -18,6 +19,7 @@ class Sms extends Component
         $this->sms_api_key = Setting::get('sms_api_key', env('SMS_API_KEY', ''));
         $this->sms_verification_text = Setting::get('sms_verification_text', 'Your account verification code is: {otp}');
         $this->sms_password_reset_text = Setting::get('sms_password_reset_text', 'Your password reset code is: {otp}');
+        $this->sms_company_verification_text = Setting::get('sms_company_verification_text', 'Your company account verification code is: {otp}');
     }
 
     public function saveSettings()
@@ -27,12 +29,14 @@ class Sms extends Component
             'sms_api_key' => 'required|string|max:255',
             'sms_verification_text' => 'required|string|max:500',
             'sms_password_reset_text' => 'required|string|max:500',
+            'sms_company_verification_text' => 'required|string|max:500',
         ]);
 
         Setting::set('sms_customer_id', $this->sms_customer_id);
         Setting::set('sms_api_key', $this->sms_api_key);
         Setting::set('sms_verification_text', $this->sms_verification_text);
         Setting::set('sms_password_reset_text', $this->sms_password_reset_text);
+        Setting::set('sms_company_verification_text', $this->sms_company_verification_text);
 
         session()->flash('success', 'SMS Settings updated successfully.');
         

@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', \App\Livewire\Home::class)->name('home');
 Route::get('/shifts', \App\Livewire\ShiftList::class)->name('shifts.index');
 Route::get('/shifts/{shift}', \App\Livewire\ShiftDetails::class)->name('shifts.show');
+Route::get('/students', \App\Livewire\FindStudent::class)->name('students.index');
+Route::get('/students/{id}', \App\Livewire\StudentProfile::class)->name('students.show');
 Route::get('/admin/login', \App\Livewire\AdminLogin::class)->name('admin.login');
 
 Route::get('/employer/register', \App\Livewire\EmployerRegister::class)->name('employer.register');
@@ -29,6 +31,7 @@ Route::post('/register/verify', [\App\Http\Controllers\Auth\RegisterController::
 Route::get('/forgot-password', \App\Livewire\Auth\ForgotPassword::class)->name('password.request')->middleware(['guest']);
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::get('/student/profile/update', \App\Livewire\Student\UpdateProfile::class)->name('student.profile.update');
     Route::get('/subscribe', \App\Livewire\Subscribe::class)->name('subscribe');
     Route::view('/verify-identity', 'student.verify-identity')->name('verify-identity');
 });
@@ -87,5 +90,13 @@ Route::get('/storage-link', function () {
     \Illuminate\Support\Facades\Artisan::call('storage:link');
     return 'Storage linked successfully!';
 })->middleware(['auth', 'admin']);
+
+Route::get('/clear-cache', function () {
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+    if (function_exists('opcache_reset')) {
+        opcache_reset();
+    }
+    return 'Cache and OPcache cleared successfully!';
+});
 
 require __DIR__.'/settings.php';

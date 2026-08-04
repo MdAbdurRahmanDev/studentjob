@@ -29,7 +29,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'phone', 'title', 'bio', 'education', 'skills', 'availability', 'category_id', 'custom_category', 'is_profile_visible', 'profile_image'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements PasskeyUser
 {
@@ -41,6 +41,15 @@ class User extends Authenticatable implements PasskeyUser
         'email',
         'phone',
         'password',
+        'title',
+        'bio',
+        'education',
+        'skills',
+        'availability',
+        'category_id',
+        'custom_category',
+        'is_profile_visible',
+        'profile_image',
     ];
 
     /**
@@ -53,6 +62,8 @@ class User extends Authenticatable implements PasskeyUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'skills' => 'array',
+            'is_profile_visible' => 'boolean',
         ];
     }
 
@@ -68,9 +79,22 @@ class User extends Authenticatable implements PasskeyUser
             : $initials;
     }
 
+    public function profileImageUrl(): ?string
+    {
+        if ($this->profile_image) {
+            return asset('uploads/' . $this->profile_image);
+        }
+        return null;
+    }
+
     public function applications()
     {
         return $this->hasMany(Application::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function subscriptions()
@@ -104,5 +128,10 @@ class User extends Authenticatable implements PasskeyUser
     {
         $verification = $this->verification;
         return $verification && $verification->status === 'approved';
+    }
+
+    public function hireRequests()
+    {
+        return $this->hasMany(HireRequest::class, 'student_id')->latest();
     }
 }

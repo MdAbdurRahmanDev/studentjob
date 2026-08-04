@@ -32,10 +32,18 @@
 
                     <!-- Verification SMS Text -->
                     <div class="mb-8 mt-8">
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Verification SMS Text</label>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Verification SMS Text (User)</label>
                         <textarea wire:model="sms_verification_text" rows="3" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 hover:bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm" placeholder="Your account verification code is: {otp}"></textarea>
                         <p class="text-xs text-gray-500 mt-2 ml-1">Use <strong class="text-indigo-600">{otp}</strong> in the text where you want the 4-digit code to appear.</p>
                         @error('sms_verification_text') <span class="text-red-500 text-xs font-medium mt-2 flex items-center">{{ $message }}</span> @enderror
+                    </div>
+
+                    <!-- Company Verification SMS Text -->
+                    <div class="mb-8 mt-8">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Company Verification SMS Text</label>
+                        <textarea wire:model="sms_company_verification_text" rows="3" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 hover:bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm" placeholder="Your company account verification code is: {otp}"></textarea>
+                        <p class="text-xs text-gray-500 mt-2 ml-1">Use <strong class="text-indigo-600">{otp}</strong> in the text where you want the 4-digit code to appear.</p>
+                        @error('sms_company_verification_text') <span class="text-red-500 text-xs font-medium mt-2 flex items-center">{{ $message }}</span> @enderror
                     </div>
 
                     <!-- Password Reset SMS Text -->
